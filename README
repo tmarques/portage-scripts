@@ -1,2 +1,6 @@
 Scripts written in BASH to help with a Gentoo Portage Tree Fork. 
 They make it easier to merge specific upstream ebuilds into my local tree.
+
+mk* scripts create SquashFS'ed versions of the tree, which serve two purposes:
+- Fit a full tree in embedded systems
+- Search the tree faster in desktop systems, since the SQFSed tree is less than 100MB compared to 700+ which must be loaded from spinning media.
