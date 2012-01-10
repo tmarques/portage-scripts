@@ -6,9 +6,9 @@
 #   0 - OK
 #  99 - Not running as root.
 
-if [ `id -u` -ne 250  ]
+if [ `id -u` -ne 0 ]
 then
-    echo "Script must be run as \"portage\" user!"
+    echo "Script must be run as root user!"
     exit 99
 fi;
 
@@ -27,7 +27,7 @@ do
 	fi
 	REAL_SIZE=`ls -l $EBUILD | awk '{ printf "%s\n", $5 }';`
 	MANIFEST_SIZE=`cat Manifest | grep $EBUILD | awk '{ printf "%s\n", $3 }';`
-	if [ $REAL_SIZE != $MANIFEST_SIZE ]
+	if [ "$REAL_SIZE" != "$MANIFEST_SIZE" ]
 	then
 		cat Manifest | grep -v $EBUILD > /tmp/Manifest;
 		cp /tmp/Manifest ./;
