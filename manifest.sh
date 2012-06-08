@@ -18,8 +18,19 @@ fi;
 #
 ###
 
+if [ ! $SCRIPT_DIR ];
+then
+	SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+fi;
+
+echo $PWD
 for EBUILD in `ls *.ebuild` 
 do
+	if [ -d files ];
+	then
+		sh $SCRIPT_DIR/portage-clean-files-dir.sh
+	fi;
+
 	REBUILD=0;
 	if [ `cat Manifest | grep $EBUILD >> /dev/null; echo $?` -eq 1 ]
 	then

@@ -23,6 +23,6 @@ SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 for DIR in `ls -l | grep drwx | awk '{ print $9 }'`
 do
 	cd $DIR;
-	sh $SCRIPT_DIR/manifest.sh;
+	SCRIPT_DIR=$SCRIPT_DIR sh $SCRIPT_DIR/manifest.sh;
 	cd ..;
 done
