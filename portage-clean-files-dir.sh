@@ -12,6 +12,7 @@ for PV_FILE in $PV_FILES;
 do
 	PV=${PV_FILE:$PN_LENGTH}
 	PV=${PV%.ebuild*}
+#echo $PV
 	# Remove ebuild revision number (-rX),
 	# if it exists.
 	if [ -n "${PV%-*}" ]
@@ -25,7 +26,6 @@ for FILE in $FILES;
 do
 	# Patch name without the package name
 	FILE_WITHOUT_PN=${FILE:$PN_LENGTH}
-	
 	# Don't include package name in the files which start with it,
 	# since portage adds it.
 	if [ "$PN" = "${FILE:0:$PN_LENGTH}" ]
@@ -34,7 +34,6 @@ do
 	else
 		FILE_TO_ESCAPE=$FILE;
 	fi;
-	
 	# Remove package version, if some patchs
 	# have it the file name, since ebuilds
 	# can also add it by the full package name.
@@ -43,18 +42,16 @@ do
 		PV_LENGTH=${#PV}
 		if [ "${PV}" = "${FILE_TO_ESCAPE:0:$PV_LENGTH}" ]
 		then
-			FILE_TO_ESCAPE=${FILE_TO_ESCAPE:$PV_LENGTH}
+			FILE_TO_ESCAPE_TMP=${FILE_TO_ESCAPE:$PV_LENGTH}
 		fi;
 	done
-	
 	# Escape dots and hyphen
-	FILE_ESCAPED=${FILE_TO_ESCAPE/./\\.};
-	FILE_ESCAPED=${FILE_TO_ESCAPE/-/\\-};
+	FILE_ESCAPED=${FILE_TO_ESCAPE_TMP/./\\.};
+	FILE_ESCAPED=${FILE_TO_ESCAPE_TMP/-/\\-};
 	
 	# Go for it.
 	`grep -rs "${FILE_ESCAPED}" *ebuild files >> /dev/null;`
 	IN_USE=$?;
-
 	if [ ! $IN_USE == "0" ]
 	then
 		echo "Deleting files/$FILE";

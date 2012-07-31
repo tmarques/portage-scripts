@@ -1,9 +1,9 @@
 #!/bin/bash
 
 MAINTREE="/usr/portage"
-TREE="/home/tmarques/fastoo-stable"
-SQFS="/home/tmarques/fastoo-stable.sqfs4"
-SQFS3="/home/tmarques/fastoo-stable.sqfs3"
+TREE="/home/tmarques/fastoo/fastoo-stable"
+SQFS="/home/tmarques/fastoo/fastoo-stable.sqfs4"
+SQFS3="/home/tmarques/fastoo/fastoo-stable.sqfs3"
 
 if [ `id -u` -ne 0  ]
 then
