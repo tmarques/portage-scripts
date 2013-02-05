@@ -23,6 +23,11 @@ then
 	SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 fi;
 
+# Clean up delete "files" digest
+cat Manifest | grep -v AUX > Manifest.tmp;
+rm Manifest;
+mv Manifest.tmp Manifest;
+
 echo $PWD
 for EBUILD in `ls *.ebuild` 
 do
@@ -30,7 +35,7 @@ do
 	then
 		sh $SCRIPT_DIR/portage-clean-files-dir.sh
 	fi;
-
+	
 	REBUILD=0;
 	if [ `cat Manifest | grep $EBUILD >> /dev/null; echo $?` -eq 1 ]
 	then
@@ -50,3 +55,8 @@ do
 		ebuild $EBUILD manifest;
 	fi
 done
+
+chown portage:portage -R .
+find . -type f -exec chmod 644 {} \;
+find . -type d -exec chmod 755 {} \;
+chmod 755 .

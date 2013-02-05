@@ -18,11 +18,11 @@ rm -rf $TREE/metadata/cache/*
 mount --bind $TREE $MAINTREE
 emerge --metadata
 umount $MAINTREE
-find $TREE/* -type f -exec chmod 644 {} \;
-find $TREE/* -type d -exec chmod 755 {} \;
-chmod 755 $TREE
-chown portage:portage $TREE
-chown portage:portage $TREE/* -R
+#find $TREE/* -type f -exec chmod 644 {} \;
+#find $TREE/* -type d -exec chmod 755 {} \;
+#chmod 755 $TREE
+#chown portage:portage $TREE
+#chown portage:portage $TREE/* -R
 
 rm $SQFS
 mksquashfs $TREE $SQFS -e .git

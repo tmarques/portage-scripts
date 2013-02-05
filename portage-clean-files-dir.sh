@@ -12,7 +12,6 @@ for PV_FILE in $PV_FILES;
 do
 	PV=${PV_FILE:$PN_LENGTH}
 	PV=${PV%.ebuild*}
-#echo $PV
 	# Remove ebuild revision number (-rX),
 	# if it exists.
 	if [ -n "${PV%-*}" ]
