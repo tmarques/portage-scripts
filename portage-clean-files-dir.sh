@@ -62,9 +62,13 @@ do
 	# Go for it.
 	grep -rs $FILE_ESCAPED *ebuild files >> /dev/null;
 	IN_USE=$?;
-	if [ $IN_USE -ne 0 ]
+	if [ $IN_USE -eq 1 ]
 	then
 		echo "Deleting files/$FILE";
 		rm files/$FILE
+		# Clean up delete "files" digest
+		cat Manifest | grep -v $FILE > Manifest.tmp;
+		rm Manifest;
+		mv Manifest.tmp Manifest;
 	fi
 done

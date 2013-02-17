@@ -23,11 +23,6 @@ then
 	SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 fi;
 
-# Clean up delete "files" digest
-cat Manifest | grep -v AUX > Manifest.tmp;
-rm Manifest;
-mv Manifest.tmp Manifest;
-
 echo $PWD
 for EBUILD in `ls *.ebuild` 
 do
