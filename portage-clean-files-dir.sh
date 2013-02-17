@@ -23,6 +23,7 @@ done
 
 for FILE in $FILES;
 do
+	FILE_TO_ESCAPE_TMP="";
 	# Patch name without the package name
 	FILE_WITHOUT_PN=${FILE:$PN_LENGTH}
 	# Don't include package name in the files which start with it,
@@ -33,6 +34,7 @@ do
 	else
 		FILE_TO_ESCAPE=$FILE;
 	fi;
+
 	# Remove package version, if some patchs
 	# have it the file name, since ebuilds
 	# can also add it by the full package name.
@@ -41,17 +43,26 @@ do
 		PV_LENGTH=${#PV}
 		if [ "${PV}" = "${FILE_TO_ESCAPE:0:$PV_LENGTH}" ]
 		then
-			FILE_TO_ESCAPE_TMP=${FILE_TO_ESCAPE:$PV_LENGTH}
+			FILE_TO_ESCAPE_TMP=${FILE_TO_ESCAPE:$PV_LENGTH};
 		fi;
 	done
-	# Escape dots and hyphen
-	FILE_ESCAPED=${FILE_TO_ESCAPE_TMP/./\\.};
-	FILE_ESCAPED=${FILE_TO_ESCAPE_TMP/-/\\-};
-	
+
+	if [ -z ${FILE_TO_ESCAPE_TMP} ]
+	then
+		FILE_TO_ESCAPE_TMP=${FILE_TO_ESCAPE};
+	fi;
+
+	# Escape dots and delete first hyphen. All dots replaced.
+	FILE_ESCAPED=${FILE_TO_ESCAPE_TMP//[.]/\\.};
+	if [ ${FILE_ESCAPED:0:1} == "-" ]
+	then
+		FILE_ESCAPED=${FILE_ESCAPED:1};
+	fi;
+
 	# Go for it.
-	`grep -rs "${FILE_ESCAPED}" *ebuild files >> /dev/null;`
+	grep -rs $FILE_ESCAPED *ebuild files >> /dev/null;
 	IN_USE=$?;
-	if [ ! $IN_USE == "0" ]
+	if [ $IN_USE -ne 0 ]
 	then
 		echo "Deleting files/$FILE";
 		rm files/$FILE
